@@ -49,22 +49,13 @@
 //! }
 //! ```
 
-use confy;
-use lazy_static::lazy_static;
 use rustls::{Certificate, PrivateKey};
 use rustls_pemfile;
 use serde::{Deserialize, Serialize};
 use std::collections::HashMap;
-use std::default;
+use std::error::Error;
+use std::path::Path;
 use std::{fs, io};
-
-lazy_static! {
-    /// Static reference to the config file
-    pub static ref CONFIG: EppClientConfig = match confy::load("epp-client") {
-        Ok(cfg) => cfg,
-        Err(e) => panic!("Config read error: {}", e),
-    };
-}
 
 /// Paths to the client certificate and client key PEM files
 #[derive(Serialize, Deserialize, Debug)]
@@ -88,27 +79,6 @@ pub struct EppClientConnection {
 #[derive(Serialize, Deserialize, Debug)]
 pub struct EppClientConfig {
     pub registry: HashMap<String, EppClientConnection>,
-}
-
-impl default::Default for EppClientConfig {
-    fn default() -> Self {
-        let mut registries: HashMap<String, EppClientConnection> = HashMap::new();
-        let registrar = EppClientConnection {
-            host: "epphost".to_string(),
-            port: 700,
-            username: "username".to_string(),
-            password: "password".to_string(),
-            ext_uris: Some(vec![]),
-            tls_files: Some(EppClientTlsFiles {
-                cert_chain: "/path/to/certificate/chain/pemfile".to_string(),
-                key: "/path/to/private/key/pemfile".to_string(),
-            }),
-        };
-        registries.insert("verisign".to_string(), registrar);
-        Self {
-            registry: registries,
-        }
-    }
 }
 
 impl EppClientConnection {
@@ -169,5 +139,16 @@ impl EppClientConfig {
     /// Returns the config for a particular registry
     pub fn registry(&self, registry: &str) -> Option<&EppClientConnection> {
         self.registry.get(registry)
+    }
+
+    /// Loads the config from a given path
+    pub fn from_file(path: &Path) -> Result<Self, Box<dyn Error>> {
+        Ok (
+            toml::from_str(
+                &fs::read_to_string(path)
+                    .map_err(|e| format!("Failed to read config file: {}", e))?
+            )
+            .map_err(|e| format!("Failed to parse config file: {}", e))?
+        )
     }
 }

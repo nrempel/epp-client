@@ -28,12 +28,13 @@
 //! ```
 
 use futures::executor::block_on;
+use std::path::Path;
 use std::{error::Error, fmt::Debug};
 use std::time::SystemTime;
 use std::sync::mpsc;
-// use std::sync::Arc;
+use std::sync::Arc;
 
-use crate::config::CONFIG;
+use crate::config::EppClientConfig;
 use crate::connection::registry::{epp_connect, EppConnection};
 use crate::error;
 use crate::epp::request::{generate_client_tr_id, EppHello, EppLogin, EppLogout};
@@ -41,9 +42,9 @@ use crate::epp::response::{EppGreeting, EppCommandResponse, EppLoginResponse, Ep
 use crate::epp::xml::EppXml;
 
 /// Connects to the registry and returns an logged-in instance of EppClient for further transactions
-async fn connect(registry: &'static str) -> Result<EppClient, Box<dyn Error>> {
-    let registry_creds = match CONFIG.registry(registry) {
-        Some(creds) => creds,
+async fn connect(config: EppClientConfig, registry: String) -> Result<EppClient, Box<dyn Error>> {
+    let registry_creds = match config.registry(&registry) {
+        Some(creds) => Arc::new(creds).clone(),
         None => return Err(format!("missing credentials for {}", registry).into())
     };
 
@@ -112,8 +113,8 @@ impl EppClient {
 
     /// Creates a new EppClient object and does an EPP Login to a given registry to become ready
     /// for subsequent transactions on this client instance
-    pub async fn new(registry: &'static str) -> Result<EppClient, Box<dyn Error>> {
-        connect(registry).await
+    pub async fn new(config: EppClientConfig, registry: &str) -> Result<EppClient, Box<dyn Error>> {
+        connect(config, registry.to_string()).await
     }
 
     /// Makes a login request to the registry and initializes an EppClient instance with it
