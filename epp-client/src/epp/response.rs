@@ -137,14 +137,19 @@ pub struct Stated;
 /// Type corresponding to possible <retention> type values
 #[derive(Serialize, Deserialize, Debug, PartialEq)]
 pub enum RetentionType {
+    /// Data for the <business> tag
     #[serde(rename = "business")]
     Business(Business),
+    /// Data for the <indefinite> tag
     #[serde(rename = "indefinite")]
     Indefinite(Indefinite),
+    /// Data for the <legal> tag
     #[serde(rename = "legal")]
     Legal(Legal),
+    /// Data for the <none> tag
     #[serde(rename = "none")]
     No(No),
+    /// Data for the <stated> tag
     #[serde(rename = "stated")]
     Stated(Stated),
 }
@@ -152,8 +157,10 @@ pub enum RetentionType {
 /// Type corresponding to possible <expiry> type values
 #[derive(Serialize, Deserialize, Debug, PartialEq)]
 pub enum ExpiryType {
+    /// Data for the <absolute> tag
     #[serde(rename = "absolute")]
     Absolute(StringValue),
+    /// Data for the <relative> tag
     #[serde(rename = "relative")]
     Relative(StringValue),
 }
@@ -169,6 +176,7 @@ pub struct Expiry {
 pub struct Retention {
     #[serde(flatten)]
     pub ty: RetentionType,
+    /// Data for the <expiry> tag
     pub expiry: Option<Expiry>,
 }
 
