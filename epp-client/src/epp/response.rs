@@ -113,16 +113,65 @@ pub struct Recipient {
     pub public: Public,
 }
 
-/// Type corresponding to <stated> in the EPP greeting XML (pending more compliant implementation)
+/// Type corresponding to <business> in the EPP greeting XML
+#[derive(Serialize, Deserialize, Debug, PartialEq)]
+pub struct Business;
+
+/// Type corresponding to <indefinite> in the EPP greeting XML
+#[derive(Serialize, Deserialize, Debug, PartialEq)]
+pub struct Indefinite;
+
+/// Type corresponding to <legal> in the EPP greeting XML
+#[derive(Serialize, Deserialize, Debug, PartialEq)]
+pub struct Legal;
+
+/// Type corresponding to <none> in the EPP greeting XML
+#[derive(Serialize, Deserialize, Debug, PartialEq)]
+pub struct No;
+
+/// Type corresponding to <stated> in the EPP greeting XML
 #[derive(Serialize, Deserialize, Debug, PartialEq)]
 pub struct Stated;
 
-/// Type corresponding to <retention> in the EPP greeting XML (pending more compliant implementation)
+
+/// Type corresponding to possible <retention> type values
+#[derive(Serialize, Deserialize, Debug, PartialEq)]
+pub enum RetentionType {
+    #[serde(rename = "business")]
+    Business(Business),
+    #[serde(rename = "indefinite")]
+    Indefinite(Indefinite),
+    #[serde(rename = "legal")]
+    Legal(Legal),
+    #[serde(rename = "none")]
+    No(No),
+    #[serde(rename = "stated")]
+    Stated(Stated),
+}
+
+/// Type corresponding to possible <expiry> type values
+#[derive(Serialize, Deserialize, Debug, PartialEq)]
+pub enum ExpiryType {
+    #[serde(rename = "absolute")]
+    Absolute(StringValue),
+    #[serde(rename = "relative")]
+    Relative(StringValue),
+}
+/// Type corresponding to <expiry> in the EPP greeting XML
+#[derive(Serialize, Deserialize, Debug, PartialEq)]
+pub struct Expiry {
+    #[serde(flatten)]
+    pub ty: ExpiryType,
+}
+
+/// Type corresponding to <retention> in the EPP greeting XML
 #[derive(Serialize, Deserialize, Debug, PartialEq)]
 pub struct Retention {
-    /// Data for the <stated> tag
-    pub stated: Stated,
+    #[serde(flatten)]
+    pub ty: RetentionType,
+    pub expiry: Option<Expiry>,
 }
+
 
 /// Type corresponding to <statement> in the EPP greeting XML (pending more compliant implementation)
 #[derive(Serialize, Deserialize, Debug, PartialEq)]
