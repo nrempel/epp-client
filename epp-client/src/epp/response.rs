@@ -68,15 +68,58 @@ impl<'de> Deserialize<'de> for ServiceMenu {
     }
 }
 
-/// Type corresponding to <all> in the EPP greeting XML (pending more compliant implementation)
+/// Type corresponding to <all> in the EPP greeting XML
 #[derive(Serialize, Deserialize, Debug, PartialEq)]
 pub struct All;
 
-/// Type corresponding to <access> in the EPP greeting XML (pending more compliant implementation)
+/// Type corresponding to <none> in the EPP greeting XML
+#[derive(Serialize, Deserialize, Debug, PartialEq)]
+pub struct NoAccess;
+
+/// Type corresponding to <null> in the EPP greeting XML
+#[derive(Serialize, Deserialize, Debug, PartialEq)]
+pub struct Null;
+
+/// Type corresponding to <personal> in the EPP greeting XML
+#[derive(Serialize, Deserialize, Debug, PartialEq)]
+pub struct Personal;
+
+/// Type corresponding to <personalAndOther> in the EPP greeting XML
+#[derive(Serialize, Deserialize, Debug, PartialEq)]
+pub struct PersonalAndOther;
+
+/// Type corresponding to <other> in the EPP greeting XML
+#[derive(Serialize, Deserialize, Debug, PartialEq)]
+pub struct Other;
+
+/// Type corresponding to possible <retention> type values
+#[derive(Serialize, Deserialize, Debug, PartialEq)]
+pub enum AccessType {
+    /// Data for the <all> tag
+    #[serde(rename = "all")]
+    All(All),
+    /// Data for the <none> tag
+    #[serde(rename = "none")]
+    NoAccess(NoAccess),
+    /// Data for the <null> tag
+    #[serde(rename = "null")]
+    Null(Null),
+    /// Data for the <personal> tag
+    #[serde(rename = "personal")]
+    Personal(Personal),
+    /// Data for the <personalAndOther> tag
+    #[serde(rename = "personalAndOther")]
+    PersonalAndOther(PersonalAndOther),
+    /// Data for the <other> tag
+    #[serde(rename = "other")]
+    Other(Other),
+}
+
+/// Type corresponding to <access> in the EPP greeting XML
 #[derive(Serialize, Deserialize, Debug, PartialEq)]
 pub struct Access {
-    /// Data for the <all> tag
-    pub all: All,
+    #[serde(flatten)]
+    pub ty: AccessType,
 }
 
 /// Type corresponding to <admin> in the EPP greeting XML (pending more compliant implementation)
@@ -133,7 +176,6 @@ pub struct No;
 #[derive(Serialize, Deserialize, Debug, PartialEq)]
 pub struct Stated;
 
-
 /// Type corresponding to possible <retention> type values
 #[derive(Serialize, Deserialize, Debug, PartialEq)]
 pub enum RetentionType {
@@ -179,7 +221,6 @@ pub struct Retention {
     /// Data for the <expiry> tag
     pub expiry: Option<Expiry>,
 }
-
 
 /// Type corresponding to <statement> in the EPP greeting XML (pending more compliant implementation)
 #[derive(Serialize, Deserialize, Debug, PartialEq)]
