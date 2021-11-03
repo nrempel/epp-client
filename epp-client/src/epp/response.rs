@@ -7,7 +7,7 @@ pub mod message;
 
 use epp_client_macros::*;
 use serde::{Deserialize, Deserializer, Serialize};
-use std::fmt::Debug;
+use std::{fmt::Debug};
 
 use crate::epp::object::{
     ElementName, EmptyTag, EppObject, Extension, Options, ServiceExtension, Services, StringValue,
@@ -238,8 +238,8 @@ pub struct Statement {
 pub struct Dcp {
     /// Data for the <access> tag
     pub access: Access,
-    /// Data for the <statement> tag
-    pub statement: Statement,
+    /// Data for the <statement> tags
+    pub statement: Vec<Statement>,
 }
 
 #[derive(Serialize, Deserialize, Debug, PartialEq, ElementName)]
