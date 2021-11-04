@@ -239,7 +239,7 @@ pub struct Retention {
     pub expiry: Option<Expiry>,
 }
 
-/// Type corresponding to <statement> in the EPP greeting XML (pending more compliant implementation)
+/// Type corresponding to <statement> in the EPP greeting XML
 #[derive(Serialize, Deserialize, Debug, PartialEq)]
 pub struct Statement {
     /// Data for the <purpose> tag
@@ -250,7 +250,7 @@ pub struct Statement {
     pub retention: Retention,
 }
 
-/// Type corresponding to <dcp> in the EPP greeting XML (pending more compliant implementation)
+/// Type corresponding to <dcp> in the EPP greeting XML
 #[derive(Serialize, Deserialize, Debug, PartialEq)]
 pub struct Dcp {
     /// Data for the <access> tag
