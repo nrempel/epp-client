@@ -122,22 +122,6 @@ pub struct Access {
     pub ty: AccessType,
 }
 
-/// Type corresponding to <admin> in the EPP greeting XML
-#[derive(Serialize, Deserialize, Debug, PartialEq)]
-pub struct Admin;
-
-/// Type corresponding to <contact> in the EPP greeting XML
-#[derive(Serialize, Deserialize, Debug, PartialEq)]
-pub struct Contact;
-
-/// Type corresponding to <prov> in the EPP greeting XML
-#[derive(Serialize, Deserialize, Debug, PartialEq)]
-pub struct Prov;
-
-/// Type corresponding to <other> in the EPP greeting XML
-#[derive(Serialize, Deserialize, Debug, PartialEq)]
-pub struct OtherPurpose;
-
 /// Type corresponding to possible <purpose> type values
 #[derive(Serialize, Deserialize, Debug, PartialEq)]
 pub enum PurposeType {
@@ -155,29 +139,38 @@ pub enum PurposeType {
     OtherPurpose,
 }
 
-
-/// Type corresponding to <purpose> in the EPP greeting XML (pending more compliant implementation)
+/// Type corresponding to <purpose> in the EPP greeting XML
 #[derive(Serialize, Deserialize, Debug, PartialEq)]
 pub struct Purpose {
     #[serde(rename = "$value")]
     pub purpose: Vec<PurposeType>,
 }
 
-/// Type corresponding to <ours> in the EPP greeting XML (pending more compliant implementation)
+/// Type corresponding to possible <purpose> type values
 #[derive(Serialize, Deserialize, Debug, PartialEq)]
-pub struct Ours;
+pub enum RecipientType {
+    /// Data for the <other> tag
+    #[serde(rename = "other")]
+    Other,
+    /// Data for the <ours> tag
+    #[serde(rename = "ours")]
+    Ours,
+    /// Data for the <public> tag
+    #[serde(rename = "public")]
+    Public,
+    /// Data for the <same> tag
+    #[serde(rename = "same")]
+    Same,
+    /// Data for the <unrelated> tag
+    #[serde(rename = "unrelated")]
+    Unrelated,
+}
 
-/// Type corresponding to <public> in the EPP greeting XML (pending more compliant implementation)
-#[derive(Serialize, Deserialize, Debug, PartialEq)]
-pub struct Public;
-
-/// Type corresponding to <recipeint> in the EPP greeting XML (pending more compliant implementation)
+/// Type corresponding to <recipeint> in the EPP greeting XML
 #[derive(Serialize, Deserialize, Debug, PartialEq)]
 pub struct Recipient {
-    /// Data for the <ours> tag
-    pub ours: Ours,
-    /// Data for the <public> tag
-    pub public: Public,
+    #[serde(rename = "$value")]
+    pub recipient: Vec<RecipientType>,
 }
 
 /// Type corresponding to <business> in the EPP greeting XML
@@ -250,7 +243,11 @@ pub struct Retention {
 #[derive(Serialize, Deserialize, Debug, PartialEq)]
 pub struct Statement {
     /// Data for the <purpose> tag
-    pub purpose: Purpose
+    pub purpose: Purpose,
+    /// Data for the <recipient> tag
+    pub recipient: Recipient,
+    /// Data for the <retention> tag
+    pub retention: Retention,
 }
 
 /// Type corresponding to <dcp> in the EPP greeting XML (pending more compliant implementation)
