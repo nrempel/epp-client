@@ -122,21 +122,45 @@ pub struct Access {
     pub ty: AccessType,
 }
 
-/// Type corresponding to <admin> in the EPP greeting XML (pending more compliant implementation)
+/// Type corresponding to <admin> in the EPP greeting XML
 #[derive(Serialize, Deserialize, Debug, PartialEq)]
 pub struct Admin;
 
-/// Type corresponding to <prov> in the EPP greeting XML (pending more compliant implementation)
+/// Type corresponding to <contact> in the EPP greeting XML
+#[derive(Serialize, Deserialize, Debug, PartialEq)]
+pub struct Contact;
+
+/// Type corresponding to <prov> in the EPP greeting XML
 #[derive(Serialize, Deserialize, Debug, PartialEq)]
 pub struct Prov;
+
+/// Type corresponding to <other> in the EPP greeting XML
+#[derive(Serialize, Deserialize, Debug, PartialEq)]
+pub struct OtherPurpose;
+
+/// Type corresponding to possible <purpose> type values
+#[derive(Serialize, Deserialize, Debug, PartialEq)]
+pub enum PurposeType {
+    /// Data for the <admin> tag
+    #[serde(rename = "admin")]
+    Admin,
+    /// Data for the <contact> tag
+    #[serde(rename = "contact")]
+    Contact,
+    /// Data for the <prov> tag
+    #[serde(rename = "prov")]
+    Prov,
+    /// Data for the <other> tag
+    #[serde(rename = "other")]
+    OtherPurpose,
+}
+
 
 /// Type corresponding to <purpose> in the EPP greeting XML (pending more compliant implementation)
 #[derive(Serialize, Deserialize, Debug, PartialEq)]
 pub struct Purpose {
-    /// Data for the <admin> tag
-    pub admin: Admin,
-    /// Data for the <prov> tag
-    pub prov: Prov,
+    #[serde(rename = "$value")]
+    pub purpose: Vec<PurposeType>,
 }
 
 /// Type corresponding to <ours> in the EPP greeting XML (pending more compliant implementation)
@@ -226,11 +250,7 @@ pub struct Retention {
 #[derive(Serialize, Deserialize, Debug, PartialEq)]
 pub struct Statement {
     /// Data for the <purpose> tag
-    pub purpose: Purpose,
-    /// Data for the <recipient> tag
-    pub recipient: Recipient,
-    /// Data for the <retention> tag
-    pub retention: Retention,
+    pub purpose: Purpose
 }
 
 /// Type corresponding to <dcp> in the EPP greeting XML (pending more compliant implementation)
