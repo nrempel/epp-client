@@ -4,7 +4,7 @@ use epp_client_macros::*;
 
 use super::XMLNS;
 use crate::common::{DomainAuthInfo, ElementName, NoExtension, Period, StringValue};
-use crate::request::{EppExtension, EppRequest};
+use crate::request::{EppExtension, Transaction};
 use crate::response::ResponseStatus;
 use serde::{Deserialize, Serialize};
 
@@ -14,7 +14,7 @@ pub struct DomainTransferRequest<E> {
     extension: Option<E>,
 }
 
-impl<E: EppExtension> EppRequest<E> for DomainTransferRequest<E> {
+impl<E: EppExtension> Transaction<E> for DomainTransferRequest<E> {
     type Input = DomainTransferReq;
     type Output = DomainTransferResponse;
 
@@ -29,7 +29,7 @@ pub struct DomainTransferApprove<E> {
     extension: Option<E>,
 }
 
-impl<E: EppExtension> EppRequest<E> for DomainTransferApprove<E> {
+impl<E: EppExtension> Transaction<E> for DomainTransferApprove<E> {
     type Input = DomainTransferReq;
     type Output = ResponseStatus;
 
@@ -44,7 +44,7 @@ pub struct DomainTransferReject<E> {
     extension: Option<E>,
 }
 
-impl<E: EppExtension> EppRequest<E> for DomainTransferReject<E> {
+impl<E: EppExtension> Transaction<E> for DomainTransferReject<E> {
     type Input = DomainTransferReq;
     type Output = ResponseStatus;
 
@@ -59,7 +59,7 @@ pub struct DomainTransferCancel<E> {
     extension: Option<E>,
 }
 
-impl<E: EppExtension> EppRequest<E> for DomainTransferCancel<E> {
+impl<E: EppExtension> Transaction<E> for DomainTransferCancel<E> {
     type Input = DomainTransferReq;
     type Output = ResponseStatus;
 
@@ -74,7 +74,7 @@ pub struct DomainTransferQuery<E> {
     extension: Option<E>,
 }
 
-impl<E: EppExtension> EppRequest<E> for DomainTransferQuery<E> {
+impl<E: EppExtension> Transaction<E> for DomainTransferQuery<E> {
     type Input = DomainTransferReq;
     type Output = DomainTransferResponse;
 
