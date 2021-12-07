@@ -28,6 +28,7 @@ mod request {
     use crate::domain::update::DomainUpdate;
     use crate::extensions::consolidate;
     use crate::extensions::consolidate::GMonthDay;
+    use crate::extensions::consolidate::SyncWithNameStore;
     use crate::extensions::namestore::NameStore;
     use crate::extensions::rgp::report::RgpRestoreReport;
     use crate::extensions::rgp::request::RgpRestoreRequest;
@@ -674,6 +675,37 @@ mod request {
         let serialized = <DomainUpdate as Transaction<consolidate::Sync>>::serialize_request(
             object,
             Some(consolidate_ext),
+            CLTRID,
+        )
+        .unwrap();
+
+        assert_eq!(xml, serialized);
+    }
+
+    #[test]
+    fn consolidate_namestore() {
+        let xml = get_xml("request/extensions/consolidate_namestore.xml").unwrap();
+
+        let exp = GMonthDay::new(5, 31, None).unwrap();
+
+        let consolidate_ext = consolidate::Sync::new(exp);
+        let namestore_ext = NameStore::new("com");
+
+        let ext = SyncWithNameStore {
+            sync: consolidate_ext,
+            namestore: namestore_ext,
+        };
+
+        let mut object = DomainUpdate::new("eppdev.com");
+
+        object.info(DomainChangeInfo {
+            registrant: None,
+            auth_info: None,
+        });
+
+        let serialized = <DomainUpdate as Transaction<SyncWithNameStore>>::serialize_request(
+            object,
+            Some(ext),
             CLTRID,
         )
         .unwrap();
