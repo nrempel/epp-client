@@ -12,11 +12,18 @@ use crate::{
     request::Transaction,
 };
 
+use super::namestore::NameStore;
+
 pub const XMLNS: &str = "http://www.verisign.com/epp/sync-1.0";
 
 impl Transaction<Sync> for DomainUpdate {
     type Response = <DomainUpdate as Transaction<NoExtension>>::Response;
     type ExtensionResponse = NoExtension;
+}
+
+impl Transaction<SyncWithNameStore> for DomainUpdate {
+    type Response = <DomainUpdate as Transaction<NoExtension>>::Response;
+    type ExtensionResponse = NameStore;
 }
 
 #[derive(PartialEq, Debug)]
@@ -80,4 +87,11 @@ pub struct Sync {
     /// The expiry date of the domain
     #[serde(rename = "sync:expMonthDay", alias = "sync")]
     pub exp: StringValue,
+}
+
+#[derive(Serialize, Deserialize, Debug, ElementName)]
+#[element_name(name = "extension")]
+pub struct SyncWithNameStore {
+    pub sync: Sync,
+    pub namestore: NameStore,
 }
