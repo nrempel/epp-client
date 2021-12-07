@@ -82,7 +82,9 @@ mod request {
     fn contact_check() {
         let xml = get_xml("request/contact/check.xml").unwrap();
         let object = ContactCheck::new(&["eppdev-contact-1", "eppdev-contact-2"]);
-        let serialized = object.serialize_request(None, CLTRID).unwrap();
+        let serialized =
+            <ContactCheck as Transaction<NoExtension>>::serialize_request(object, None, CLTRID)
+                .unwrap();
 
         assert_eq!(xml, serialized);
     }
@@ -108,7 +110,9 @@ mod request {
         );
         object.set_fax(fax);
 
-        let serialized = object.serialize_request(None, CLTRID).unwrap();
+        let serialized =
+            <ContactCreate as Transaction<NoExtension>>::serialize_request(object, None, CLTRID)
+                .unwrap();
 
         assert_eq!(xml, serialized);
     }
@@ -119,7 +123,9 @@ mod request {
 
         let object = ContactInfo::new("eppdev-contact-3", "eppdev-387323");
 
-        let serialized = object.serialize_request(None, CLTRID).unwrap();
+        let serialized =
+            <ContactInfo as Transaction<NoExtension>>::serialize_request(object, None, CLTRID)
+                .unwrap();
 
         assert_eq!(xml, serialized);
     }
@@ -145,7 +151,9 @@ mod request {
         }];
         object.remove(remove_statuses);
 
-        let serialized = object.serialize_request(None, CLTRID).unwrap();
+        let serialized =
+            <ContactUpdate as Transaction<NoExtension>>::serialize_request(object, None, CLTRID)
+                .unwrap();
 
         assert_eq!(xml, serialized);
     }
@@ -156,7 +164,9 @@ mod request {
 
         let object = ContactDelete::new("eppdev-contact-3");
 
-        let serialized = object.serialize_request(None, CLTRID).unwrap();
+        let serialized =
+            <ContactDelete as Transaction<NoExtension>>::serialize_request(object, None, CLTRID)
+                .unwrap();
 
         assert_eq!(xml, serialized);
     }
@@ -202,7 +212,9 @@ mod request {
             Some(contacts),
         );
 
-        let serialized = object.serialize_request(None, CLTRID).unwrap();
+        let serialized =
+            <DomainCreate as Transaction<NoExtension>>::serialize_request(object, None, CLTRID)
+                .unwrap();
 
         assert_eq!(xml, serialized);
     }
@@ -239,7 +251,9 @@ mod request {
             Some(contacts),
         );
 
-        let serialized = object.serialize_request(None, CLTRID).unwrap();
+        let serialized =
+            <DomainCreate as Transaction<NoExtension>>::serialize_request(object, None, CLTRID)
+                .unwrap();
 
         assert_eq!(xml, serialized);
     }
@@ -288,7 +302,9 @@ mod request {
             Some(contacts),
         );
 
-        let serialized = object.serialize_request(None, CLTRID).unwrap();
+        let serialized =
+            <DomainCreate as Transaction<NoExtension>>::serialize_request(object, None, CLTRID)
+                .unwrap();
 
         assert_eq!(xml, serialized);
     }
@@ -351,7 +367,9 @@ mod request {
 
         let object = DomainDelete::new("eppdev.com");
 
-        let serialized = object.serialize_request(None, CLTRID).unwrap();
+        let serialized =
+            <DomainDelete as Transaction<NoExtension>>::serialize_request(object, None, CLTRID)
+                .unwrap();
 
         assert_eq!(xml, serialized);
     }
@@ -363,7 +381,9 @@ mod request {
         let exp_date = NaiveDate::from_ymd(2022, 7, 23);
         let object = DomainRenew::new("eppdev.com", exp_date, 1);
 
-        let serialized = object.serialize_request(None, CLTRID).unwrap();
+        let serialized =
+            <DomainRenew as Transaction<NoExtension>>::serialize_request(object, None, CLTRID)
+                .unwrap();
 
         assert_eq!(xml, serialized);
     }
@@ -374,7 +394,10 @@ mod request {
 
         let object = DomainTransferRequest::new("testing.com", Some(1), "epP4uthd#v");
 
-        let serialized = object.serialize_request(None, CLTRID).unwrap();
+        let serialized = <DomainTransferRequest as Transaction<NoExtension>>::serialize_request(
+            object, None, CLTRID,
+        )
+        .unwrap();
 
         assert_eq!(xml, serialized);
     }
@@ -385,7 +408,10 @@ mod request {
 
         let object = DomainTransferUpdate::approve("testing.com");
 
-        let serialized = object.serialize_request(None, CLTRID).unwrap();
+        let serialized = <DomainTransferUpdate as Transaction<NoExtension>>::serialize_request(
+            object, None, CLTRID,
+        )
+        .unwrap();
 
         assert_eq!(xml, serialized);
     }
@@ -396,7 +422,10 @@ mod request {
 
         let object = DomainTransferUpdate::reject("testing.com");
 
-        let serialized = object.serialize_request(None, CLTRID).unwrap();
+        let serialized = <DomainTransferUpdate as Transaction<NoExtension>>::serialize_request(
+            object, None, CLTRID,
+        )
+        .unwrap();
 
         assert_eq!(xml, serialized);
     }
@@ -407,7 +436,10 @@ mod request {
 
         let object = DomainTransferUpdate::cancel("testing.com");
 
-        let serialized = object.serialize_request(None, CLTRID).unwrap();
+        let serialized = <DomainTransferUpdate as Transaction<NoExtension>>::serialize_request(
+            object, None, CLTRID,
+        )
+        .unwrap();
 
         assert_eq!(xml, serialized);
     }
@@ -418,7 +450,10 @@ mod request {
 
         let object = DomainTransferRequest::query("testing.com", "epP4uthd#v");
 
-        let serialized = object.serialize_request(None, CLTRID).unwrap();
+        let serialized = <DomainTransferRequest as Transaction<NoExtension>>::serialize_request(
+            object, None, CLTRID,
+        )
+        .unwrap();
 
         assert_eq!(xml, serialized);
     }
@@ -429,7 +464,9 @@ mod request {
 
         let object = HostCheck::new(&["ns1.eppdev-1.com", "host1.eppdev-1.com"]);
 
-        let serialized = object.serialize_request(None, CLTRID).unwrap();
+        let serialized =
+            <HostCheck as Transaction<NoExtension>>::serialize_request(object, None, CLTRID)
+                .unwrap();
 
         assert_eq!(xml, serialized);
     }
@@ -445,7 +482,9 @@ mod request {
 
         let object = HostCreate::new("host1.eppdev-1.com", addresses);
 
-        let serialized = object.serialize_request(None, CLTRID).unwrap();
+        let serialized =
+            <HostCreate as Transaction<NoExtension>>::serialize_request(object, None, CLTRID)
+                .unwrap();
 
         assert_eq!(xml, serialized);
     }
@@ -456,7 +495,9 @@ mod request {
 
         let object = HostInfo::new("ns1.eppdev-1.com");
 
-        let serialized = object.serialize_request(None, CLTRID).unwrap();
+        let serialized =
+            <HostInfo as Transaction<NoExtension>>::serialize_request(object, None, CLTRID)
+                .unwrap();
 
         assert_eq!(xml, serialized);
     }
@@ -487,7 +528,9 @@ mod request {
             name: "host2.eppdev-1.com".into(),
         });
 
-        let serialized = object.serialize_request(None, CLTRID).unwrap();
+        let serialized =
+            <HostUpdate as Transaction<NoExtension>>::serialize_request(object, None, CLTRID)
+                .unwrap();
 
         assert_eq!(xml, serialized);
     }
@@ -498,7 +541,9 @@ mod request {
 
         let object = HostDelete::new("ns1.eppdev-1.com");
 
-        let serialized = object.serialize_request(None, CLTRID).unwrap();
+        let serialized =
+            <HostDelete as Transaction<NoExtension>>::serialize_request(object, None, CLTRID)
+                .unwrap();
 
         assert_eq!(xml, serialized);
     }
