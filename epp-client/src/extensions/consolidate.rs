@@ -10,6 +10,8 @@ use crate::{
     request::EppExtension,
 };
 
+use super::namestore::{NameStore, NameStoreData};
+
 pub const XMLNS: &str = "http://www.verisign.com/epp/sync-1.0";
 
 #[derive(PartialEq, Debug)]
@@ -122,8 +124,31 @@ impl Update {
     }
 }
 
+impl UpdateWithNameStore {
+    /// Create a new RGP restore report request
+    pub fn new(expiration: GMonthDay, subproduct: &str) -> Self {
+        Self {
+            sync: Update::new(expiration).data,
+            namestore: NameStore::new(subproduct).data,
+        }
+    }
+}
+
 impl EppExtension for Update {
     type Response = NoExtension;
+}
+
+impl EppExtension for UpdateWithNameStore {
+    type Response = NameStore;
+}
+
+#[derive(Debug, Deserialize, Serialize)]
+#[serde(rename = "extension")]
+pub struct UpdateWithNameStore {
+    #[serde(rename = "sync:update")]
+    pub sync: UpdateData,
+    #[serde(rename = "namestoreExt:namestoreExt")]
+    pub namestore: NameStoreData,
 }
 
 #[derive(Debug, Deserialize, Serialize)]

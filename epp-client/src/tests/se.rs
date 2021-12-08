@@ -624,4 +624,24 @@ mod request {
 
         assert_eq!(xml, serialized);
     }
+    #[test]
+    fn consolidate_namestore() {
+        let xml = get_xml("request/extensions/consolidate_namestore.xml").unwrap();
+
+        let exp = GMonthDay::new(5, 31, None).unwrap();
+
+        let consolidate_ext = consolidate::UpdateWithNameStore::new(exp, "com");
+
+        let mut object =
+            DomainUpdate::<consolidate::Update>::new("eppdev.com").with_extension(consolidate_ext);
+
+        object.info(DomainChangeInfo {
+            registrant: None,
+            auth_info: None,
+        });
+
+        let serialized = object.serialize_request(CLTRID).unwrap();
+
+        assert_eq!(xml, serialized);
+    }
 }
