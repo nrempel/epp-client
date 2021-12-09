@@ -9,12 +9,20 @@ use crate::common::{NoExtension, StringValue};
 use crate::domain::update::DomainUpdate;
 use crate::request::{Extension, Transaction};
 
+use super::namestore::{NameStore, NameStoreData};
+
 pub const XMLNS: &str = "http://www.verisign.com/epp/sync-1.0";
 
 impl Transaction<Update> for DomainUpdate {}
 
 impl Extension for Update {
     type Response = NoExtension;
+}
+
+impl Transaction<UpdateWithNameStore> for DomainUpdate {}
+
+impl Extension for UpdateWithNameStore {
+    type Response = NameStore;
 }
 
 #[derive(PartialEq, Debug)]
@@ -59,7 +67,7 @@ impl fmt::Display for GMonthDay {
 }
 
 impl Update {
-    /// Create a new RGP restore report request
+    /// Create a new sync update request
     pub fn new(expiration: GMonthDay) -> Self {
         Self {
             data: UpdateData {
@@ -70,10 +78,28 @@ impl Update {
     }
 }
 
+impl UpdateWithNameStore {
+    /// Create a new sync update with namestore request
+    pub fn new(expiration: GMonthDay, subproduct: &str) -> Self {
+        Self {
+            sync: Update::new(expiration).data,
+            namestore: NameStore::new(subproduct).data,
+        }
+    }
+}
+
 #[derive(Debug, Serialize)]
 pub struct Update {
     #[serde(rename = "sync:update")]
     pub data: UpdateData,
+}
+
+#[derive(Debug, Serialize)]
+pub struct UpdateWithNameStore {
+    #[serde(rename = "sync:update")]
+    pub sync: UpdateData,
+    #[serde(rename = "namestoreExt:namestoreExt")]
+    pub namestore: NameStoreData,
 }
 
 #[derive(Serialize, Debug)]
