@@ -136,7 +136,7 @@ impl<'a, C: Command> From<&'a C> for RequestData<'a, C, NoExtension> {
     }
 }
 
-impl<'a, C: Command, E: Command> From<(&'a C, &'a E)> for RequestData<'a, C, E> {
+impl<'a, C: Command, E: Extension> From<(&'a C, &'a E)> for RequestData<'a, C, E> {
     fn from((command, extension): (&'a C, &'a E)) -> Self {
         Self {
             command,
