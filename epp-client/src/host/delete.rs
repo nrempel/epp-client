@@ -56,7 +56,7 @@ mod tests {
         let object = HostDelete::new("ns1.eppdev-1.com");
 
         let serialized =
-            <HostDelete as Transaction<NoExtension>>::serialize_request(object, None, CLTRID)
+            <HostDelete as Transaction<NoExtension>>::serialize_request(&object, None, CLTRID)
                 .unwrap();
 
         assert_eq!(xml, serialized);

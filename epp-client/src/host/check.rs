@@ -101,7 +101,7 @@ mod tests {
         let object = HostCheck::new(&["ns1.eppdev-1.com", "host1.eppdev-1.com"]);
 
         let serialized =
-            <HostCheck as Transaction<NoExtension>>::serialize_request(object, None, CLTRID)
+            <HostCheck as Transaction<NoExtension>>::serialize_request(&object, None, CLTRID)
                 .unwrap();
 
         assert_eq!(xml, serialized);

@@ -90,7 +90,7 @@ mod tests {
         let object = DomainRenew::new("eppdev.com", exp_date, 1);
 
         let serialized =
-            <DomainRenew as Transaction<NoExtension>>::serialize_request(object, None, CLTRID)
+            <DomainRenew as Transaction<NoExtension>>::serialize_request(&object, None, CLTRID)
                 .unwrap();
 
         assert_eq!(xml, serialized);

@@ -114,7 +114,7 @@ mod tests {
         let object = ContactInfo::new("eppdev-contact-3", "eppdev-387323");
 
         let serialized =
-            <ContactInfo as Transaction<NoExtension>>::serialize_request(object, None, CLTRID)
+            <ContactInfo as Transaction<NoExtension>>::serialize_request(&object, None, CLTRID)
                 .unwrap();
 
         assert_eq!(xml, serialized);

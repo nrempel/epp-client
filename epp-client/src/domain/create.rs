@@ -138,7 +138,7 @@ mod tests {
         );
 
         let serialized =
-            <DomainCreate as Transaction<NoExtension>>::serialize_request(object, None, CLTRID)
+            <DomainCreate as Transaction<NoExtension>>::serialize_request(&object, None, CLTRID)
                 .unwrap();
 
         assert_eq!(xml, serialized);
@@ -177,7 +177,7 @@ mod tests {
         );
 
         let serialized =
-            <DomainCreate as Transaction<NoExtension>>::serialize_request(object, None, CLTRID)
+            <DomainCreate as Transaction<NoExtension>>::serialize_request(&object, None, CLTRID)
                 .unwrap();
 
         assert_eq!(xml, serialized);
@@ -228,7 +228,7 @@ mod tests {
         );
 
         let serialized =
-            <DomainCreate as Transaction<NoExtension>>::serialize_request(object, None, CLTRID)
+            <DomainCreate as Transaction<NoExtension>>::serialize_request(&object, None, CLTRID)
                 .unwrap();
 
         assert_eq!(xml, serialized);

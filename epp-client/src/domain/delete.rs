@@ -56,7 +56,7 @@ mod tests {
         let object = DomainDelete::new("eppdev.com");
 
         let serialized =
-            <DomainDelete as Transaction<NoExtension>>::serialize_request(object, None, CLTRID)
+            <DomainDelete as Transaction<NoExtension>>::serialize_request(&object, None, CLTRID)
                 .unwrap();
 
         assert_eq!(xml, serialized);

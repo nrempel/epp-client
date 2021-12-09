@@ -97,8 +97,8 @@ mod tests {
         let object = DomainCheck::new(vec!["example1.com", "example2.com", "example3.com"]);
 
         let serialized = <DomainCheck as Transaction<NameStore>>::serialize_request(
-            object,
-            Some(namestore_ext),
+            &object,
+            Some(&namestore_ext),
             CLTRID,
         )
         .unwrap();

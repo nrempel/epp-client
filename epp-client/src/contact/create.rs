@@ -127,7 +127,7 @@ mod tests {
         object.set_fax(fax);
 
         let serialized =
-            <ContactCreate as Transaction<NoExtension>>::serialize_request(object, None, CLTRID)
+            <ContactCreate as Transaction<NoExtension>>::serialize_request(&object, None, CLTRID)
                 .unwrap();
 
         assert_eq!(xml, serialized);

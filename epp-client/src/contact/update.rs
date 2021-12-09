@@ -134,7 +134,7 @@ mod tests {
         object.remove(remove_statuses);
 
         let serialized =
-            <ContactUpdate as Transaction<NoExtension>>::serialize_request(object, None, CLTRID)
+            <ContactUpdate as Transaction<NoExtension>>::serialize_request(&object, None, CLTRID)
                 .unwrap();
 
         assert_eq!(xml, serialized);

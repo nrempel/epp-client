@@ -101,7 +101,7 @@ mod tests {
         let xml = get_xml("request/contact/check.xml").unwrap();
         let object = ContactCheck::new(&["eppdev-contact-1", "eppdev-contact-2"]);
         let serialized =
-            <ContactCheck as Transaction<NoExtension>>::serialize_request(object, None, CLTRID)
+            <ContactCheck as Transaction<NoExtension>>::serialize_request(&object, None, CLTRID)
                 .unwrap();
 
         assert_eq!(xml, serialized);

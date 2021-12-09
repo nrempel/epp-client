@@ -122,7 +122,7 @@ mod tests {
         });
 
         let serialized =
-            <HostUpdate as Transaction<NoExtension>>::serialize_request(object, None, CLTRID)
+            <HostUpdate as Transaction<NoExtension>>::serialize_request(&object, None, CLTRID)
                 .unwrap();
 
         assert_eq!(xml, serialized);

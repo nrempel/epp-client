@@ -87,7 +87,7 @@ mod tests {
         let object = HostCreate::new("host1.eppdev-1.com", addresses);
 
         let serialized =
-            <HostCreate as Transaction<NoExtension>>::serialize_request(object, None, CLTRID)
+            <HostCreate as Transaction<NoExtension>>::serialize_request(&object, None, CLTRID)
                 .unwrap();
 
         assert_eq!(xml, serialized);

@@ -101,7 +101,7 @@ mod tests {
         let object = HostInfo::new("ns1.eppdev-1.com");
 
         let serialized =
-            <HostInfo as Transaction<NoExtension>>::serialize_request(object, None, CLTRID)
+            <HostInfo as Transaction<NoExtension>>::serialize_request(&object, None, CLTRID)
                 .unwrap();
 
         assert_eq!(xml, serialized);

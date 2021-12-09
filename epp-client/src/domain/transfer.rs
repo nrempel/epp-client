@@ -156,7 +156,7 @@ mod tests {
         let object = DomainTransfer::new("testing.com", Some(1), "epP4uthd#v");
 
         let serialized =
-            <DomainTransfer as Transaction<NoExtension>>::serialize_request(object, None, CLTRID)
+            <DomainTransfer as Transaction<NoExtension>>::serialize_request(&object, None, CLTRID)
                 .unwrap();
 
         assert_eq!(xml, serialized);
@@ -169,7 +169,7 @@ mod tests {
         let object = DomainTransfer::approve("testing.com");
 
         let serialized =
-            <DomainTransfer as Transaction<NoExtension>>::serialize_request(object, None, CLTRID)
+            <DomainTransfer as Transaction<NoExtension>>::serialize_request(&object, None, CLTRID)
                 .unwrap();
 
         assert_eq!(xml, serialized);
@@ -182,7 +182,7 @@ mod tests {
         let object = DomainTransfer::reject("testing.com");
 
         let serialized =
-            <DomainTransfer as Transaction<NoExtension>>::serialize_request(object, None, CLTRID)
+            <DomainTransfer as Transaction<NoExtension>>::serialize_request(&object, None, CLTRID)
                 .unwrap();
 
         assert_eq!(xml, serialized);
@@ -195,7 +195,7 @@ mod tests {
         let object = DomainTransfer::cancel("testing.com");
 
         let serialized =
-            <DomainTransfer as Transaction<NoExtension>>::serialize_request(object, None, CLTRID)
+            <DomainTransfer as Transaction<NoExtension>>::serialize_request(&object, None, CLTRID)
                 .unwrap();
 
         assert_eq!(xml, serialized);
@@ -208,7 +208,7 @@ mod tests {
         let object = DomainTransfer::query("testing.com", "epP4uthd#v");
 
         let serialized =
-            <DomainTransfer as Transaction<NoExtension>>::serialize_request(object, None, CLTRID)
+            <DomainTransfer as Transaction<NoExtension>>::serialize_request(&object, None, CLTRID)
                 .unwrap();
 
         assert_eq!(xml, serialized);

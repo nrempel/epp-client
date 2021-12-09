@@ -56,7 +56,7 @@ mod tests {
         let object = ContactDelete::new("eppdev-contact-3");
 
         let serialized =
-            <ContactDelete as Transaction<NoExtension>>::serialize_request(object, None, CLTRID)
+            <ContactDelete as Transaction<NoExtension>>::serialize_request(&object, None, CLTRID)
                 .unwrap();
 
         assert_eq!(xml, serialized);
