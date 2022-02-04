@@ -14,6 +14,7 @@ use crate::error::Error;
 /// EPP Connection struct with some metadata for the connection
 pub(crate) struct EppConnection<C: Connector> {
     registry: String,
+    connector: C,
     stream: C::Connection,
     pub greeting: String,
     timeout: Duration,
@@ -28,6 +29,7 @@ impl<C: Connector> EppConnection<C> {
         let mut this = Self {
             registry,
             stream: connector.connect(timeout).await?,
+            connector,
             greeting: String::new(),
             timeout,
         };
@@ -92,7 +94,17 @@ impl<C: Connector> EppConnection<C> {
     /// receieved to the request
     pub(crate) async fn transact(&mut self, content: &str) -> Result<String, Error> {
         debug!("{}: request: {}", self.registry, content);
-        self.send_epp_request(content).await?;
+
+        match self.send_epp_request(content).await {
+            Ok(()) => {}
+            Err(Error::Io(_)) => {
+                self.stream = self.connector.connect(self.timeout).await?;
+                self.send_epp_request(content).await?;
+            }
+            Err(e) => {
+                return Err(e);
+            }
+        }
 
         let response = self.get_epp_response().await?;
         debug!("{}: response: {}", self.registry, response);
