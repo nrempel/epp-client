@@ -7,7 +7,7 @@ use std::{io, str, u32};
 
 use async_trait::async_trait;
 use tokio::io::{AsyncRead, AsyncReadExt, AsyncWrite, AsyncWriteExt};
-use tracing::{debug, info};
+use tracing::info;
 
 use crate::error::Error;
 
@@ -52,7 +52,7 @@ impl<C: Connector> EppConnection<C> {
         buf[4..].clone_from_slice(content.as_bytes());
 
         let wrote = timeout(self.timeout, self.stream.write(&buf)).await?;
-        debug!("{}: Wrote {} bytes", self.registry, wrote);
+        info!("{}: Wrote {} bytes", self.registry, wrote);
         Ok(())
     }
 
@@ -64,17 +64,17 @@ impl<C: Connector> EppConnection<C> {
         let buf_size: usize = u32::from_be_bytes(buf).try_into()?;
 
         let message_size = buf_size - 4;
-        debug!("{}: Response buffer size: {}", self.registry, message_size);
+        info!("{}: Response buffer size: {}", self.registry, message_size);
 
         let mut buf = vec![0; message_size];
         let mut read_size: usize = 0;
 
         loop {
             let read = timeout(self.timeout, self.stream.read(&mut buf[read_size..])).await?;
-            debug!("{}: Read: {} bytes", self.registry, read);
+            info!("{}: Read: {} bytes", self.registry, read);
 
             read_size += read;
-            debug!("{}: Total read: {} bytes", self.registry, read_size);
+            info!("{}: Total read: {} bytes", self.registry, read_size);
 
             if read == 0 {
                 return Err(io::Error::new(
@@ -93,7 +93,7 @@ impl<C: Connector> EppConnection<C> {
     /// Sends an EPP XML request to the registry and return the response
     /// receieved to the request
     pub(crate) async fn transact(&mut self, content: &str) -> Result<String, Error> {
-        debug!("{}: request: {}", self.registry, content);
+        info!("{}: request: {}", self.registry, content);
 
         match self.send_epp_request(content).await {
             Ok(()) => {}
@@ -107,7 +107,7 @@ impl<C: Connector> EppConnection<C> {
         }
 
         let response = self.get_epp_response().await?;
-        debug!("{}: response: {}", self.registry, response);
+        info!("{}: response: {}", self.registry, response);
 
         Ok(response)
     }
