@@ -99,6 +99,7 @@ impl<C: Connector> EppConnection<C> {
             Ok(()) => {}
             Err(Error::Io(_)) => {
                 self.stream = self.connector.connect(self.timeout).await?;
+                self.greeting = self.get_epp_response().await?;
                 self.send_epp_request(content).await?;
             }
             Err(e) => {
